@@ -2,6 +2,7 @@ import React from 'react'
 import './styles.css';
 import { NavLink, useHistory } from 'react-router-dom'
 import axios from 'axios';
+import Apple from '../../images/applegif.gif'
 
 function Navbar(props) {
   let history = useHistory()
@@ -34,7 +35,7 @@ function Navbar(props) {
           <div className="col-12 mx-auto p-0">
             <nav className="navbar navbar-expand-lg">
               <div className="container-fluid">
-              <NavLink className="nav-link" to="/"><span className="navbar-brand mb-0 h1 ">Fitness Help</span></NavLink>
+              <NavLink className="nav-link" to="/"><span className="navbar-brand mb-0 h1 ">Rejuvenating Y<img src={Apple} alt="apple" style={{width:"30px", height:"30px"}}/>u</span></NavLink>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                   <span className="navbar-toggler-icon"></span>
                 </button>
@@ -57,11 +58,11 @@ function Navbar(props) {
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                   <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li className="nav-item">
-                      <NavLink activeClassName="menu-active" exact className="nav-link active" aria-current="page" to="/signin">Login</NavLink>
+                      <NavLink activeClassName="menu-active" exact className="nav-link active" aria-current="page" to="/signin">Login/Register</NavLink>
                     </li>
-                    <li className="nav-item">
+                    {/* <li className="nav-item">
                       <NavLink activeClassName="menu-active" className="nav-link" to="/registration">Register</NavLink>
-                    </li>
+                    </li> */}
                   </ul>
                 </div>
                 }
