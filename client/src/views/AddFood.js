@@ -1,7 +1,9 @@
 import React from "react";
 
 function AddFood() {
-  return <div></div>;
+  return <div>
+    
+  </div>;
 }
 
 export default AddFood;
