@@ -7,7 +7,7 @@ module.exports = {
     try {
       const queriedUser = await User.findOne({ username: req.body.username });
       if (queriedUser) {
-        res.status(400).json({ message: "username already in use" });
+        res.status(402).json({ message: "username already in use" });
         return;
       }
     } catch (err) {
@@ -21,9 +21,11 @@ module.exports = {
         { id: newUserObj._id },
         process.env.SECRET_KEY
       );
+      console.log("usertoken",usertoken);
       res
         .cookie("usertoken", usertoken, process.env.SECRET_KEY, {
           httpOnly: true,
+          expires: new Date(Date.now() + 900000)
         })
         .json(newUserObj);
     } catch (err) {
@@ -36,7 +38,7 @@ module.exports = {
     try {
       queriedUser = await User.findOne({ username: req.body.username });
       if (!queriedUser) {
-        res.status(400).json({ message: "User not found!" });
+        res.status(402).json({ message: "User not found!" });
         return;
       }
     } catch (err) {
@@ -49,7 +51,7 @@ module.exports = {
       queriedUser.password
     );
     if (!passwordCheck) {
-      res.status(400).json({ message: "Password does not match!" });
+      res.status(403).json({ message: "Password does not match!" });
       return;
     }
 

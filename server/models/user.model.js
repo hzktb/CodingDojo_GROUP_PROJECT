@@ -26,7 +26,7 @@ const UserSchema = new mongoose.Schema(
     activityLevel: {
       type: String,
       required: [true, "Please enter your activity level"],
-      enum: ["no activity, light activity, moderate activity, heavy activity"],
+      // enum: ["no activity, light activity, moderateActivity, heavy activity"],
     },
 
     dailyWeights: {

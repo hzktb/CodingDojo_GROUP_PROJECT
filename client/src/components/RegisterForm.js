@@ -1,22 +1,24 @@
-import React from "react";
-import { 
-  Avatar, 
+import React, { useState } from "react";
+import {
+  Avatar,
   Button,
   CssBaseline,
   TextField,
-  Link,
   Grid,
   Typography,
   makeStyles,
-  Container} from "@material-ui/core";
+  Container,
+  MenuItem,
+} from "@material-ui/core";
 
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import axios from "axios";
+import { useHistory } from 'react-router-dom'
 
 const useStyles = makeStyles(theme => ({
   root: {
-    height: "100vh",
     backgroundColor: "white",
-    margin: "20px 150px 0px 0px",
+    margin: "20px 150px 20px 0px",
   },
   paper: {
     marginTop: theme.spacing(2),
@@ -39,12 +41,73 @@ const useStyles = makeStyles(theme => ({
     '&:hover': {
       backgroundColor: '#a01217',
       color: 'black',
-  },
+    },
   },
 }));
 
-function RegisterForm() {
+const activityLevelEnum = [
+  {
+    value: 'noActivity',
+    label: 'No Activity',
+  },
+  {
+    value: 'lightActivity,',
+    label: 'Light Activity',
+  },
+  {
+    value: 'moderateActivity',
+    label: 'Moderate Activity',
+  },
+  {
+    value: 'heavyActivity',
+    label: 'Heavy Activity',
+  },
+];
+
+function RegisterForm(props) {
   const classes = useStyles();
+  const [userName, setUserName] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [height, setHeight] = useState();
+  const [weight, setWeight] = useState();
+  const [activityLevel, setActivityLevel] = useState('')
+  const [err, setErr] = useState("");
+  const [uniqueNameErr, setUniqueNameErr] = useState("");
+  let history = useHistory()
+
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setUniqueNameErr("")
+    const postData = {
+      username: userName,
+      password: password, 
+      confirmPassword: confirmPassword,
+      initialWeight: weight,
+      height: height,
+      activityLevel: activityLevel
+    };
+
+    try {
+      let newUser = await axios.post("http://localhost:8000/api/users/register", postData,{
+        withCredentials: true,
+      });
+      props.setUser(newUser.data.username)
+      localStorage.setItem("userName", newUser.data.username);
+      history.push('/main')
+    } catch (err) {
+      console.log(err.response);
+      if (err.response.status === 402) {
+        setUniqueNameErr(err.response.data.message);
+        console.log(err.response.data.message);
+      }
+      else {
+        console.log(err.response.data.errors);
+        setErr(err.response.data.errors);
+      }
+    }
+  }
 
   return <div>
     <Container component="main" maxWidth="xs" className={classes.root}>
@@ -67,10 +130,10 @@ function RegisterForm() {
                 fullWidth
                 id="userName"
                 label="User Name"
-                // value={userName}
-                // onChange={(e) => setUserName(e.target.value)}
-                // error={err.name ? true : false}
-                // helperText={err.name ? err.name.message : "" }
+                value={userName}
+                onChange={(e) => setUserName(e.target.value)}
+                error={err.username ? true : uniqueNameErr ? true : false}
+                helperText={err.username ? err.username.message : uniqueNameErr ? uniqueNameErr : ""}
                 autoFocus
               />
             </Grid>
@@ -84,10 +147,10 @@ function RegisterForm() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
-                // value={password}
-                // onChange={(e) => setPassword(e.target.value)}
-                // error={err.password ? true : false}
-                // helperText={err.password ? err.password.message : "" }
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                error={err.password ? true : false}
+                helperText={err.password ? err.password.message : ""}
               />
             </Grid>
             <Grid item xs={12}>
@@ -99,29 +162,12 @@ function RegisterForm() {
                 label="Confirm Password"
                 type="password"
                 id="confirm password"
-                // value={confirmPassword}
-                // onChange={(e) => setConfirmPassword(e.target.value)}
-                // error={err.confirmPassword ? true : false}
-                // helperText={err.confirmPassword ? err.confirmPassword.message : "" }
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                error={err.confirmPassword ? true : false}
+                helperText={err.confirmPassword ? err.confirmPassword.message : ""}
               />
             </Grid>
-
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="age"
-                label="Age"
-                name="age"
-                autoComplete="Age"
-                // value={email}
-                // onChange={(e) => setEmail(e.target.value)}
-                // error={err.email ? true : false}
-                // helperText={err.email ? err.email.message : "" }
-              />
-            </Grid>
-
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
@@ -130,12 +176,12 @@ function RegisterForm() {
                 id="height"
                 label="Height"
                 name="height"
-                placeholder="Enter your height in feet/inches"
-                autoComplete="Age"
-                // value={email}
-                // onChange={(e) => setEmail(e.target.value)}
-                // error={err.email ? true : false}
-                // helperText={err.email ? err.email.message : "" }
+                placeholder="Enter your height in cm"
+                autoComplete="height"
+                value={height}
+                onChange={(e) => setHeight(e.target.value)}
+                error={err.height ? true : false}
+                helperText={err.height ? err.height.message : ""}
               />
             </Grid>
 
@@ -148,14 +194,34 @@ function RegisterForm() {
                 label="Weight"
                 name="weight"
                 placeholder="Enter your weight in pounds(lbs)"
-                autoComplete="wight"
-                // value={email}
-                // onChange={(e) => setEmail(e.target.value)}
-                // error={err.email ? true : false}
-                // helperText={err.email ? err.email.message : "" }
+                autoComplete="weight"
+                value={weight}
+                onChange={(e) => setWeight(e.target.value)}
+                error={err.initialWeight ? true : false}
+                helperText={err.initialWeight ? err.initialWeight.message : ""}
               />
             </Grid>
-           
+            <Grid item xs={12}>
+              <TextField
+                id="outlined-select-currency"
+                select
+                variant="outlined"
+                required
+                fullWidth
+                label="Select"
+                value={activityLevel}
+                onChange={(e) => setActivityLevel(e.target.value)}
+                error={err.activityLevel ? true : false}
+                helperText={err.activityLevel ? err.activityLevel.message : ""}
+              >
+                {activityLevelEnum.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Grid>
+
           </Grid>
           <Button
             type="submit"
@@ -163,15 +229,12 @@ function RegisterForm() {
             variant="contained"
             color="primary"
             className={classes.submit}
-            // onClick = {handleSubmit}
+            onClick={handleSubmit}
           >
             Sign Up
           </Button>
         </form>
       </div>
-      {/* <Box mt={5}>
-        <MadeWithLove />
-      </Box> */}
     </Container>
   </div>;
 }

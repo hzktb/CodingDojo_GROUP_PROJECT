@@ -1,20 +1,18 @@
-import React from "react";
+import React,{useState} from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import Link from "@material-ui/core/Link";
-import Grid from "@material-ui/core/Grid";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import { useHistory } from 'react-router-dom'
+import axios from "axios";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    height: "80vh",
+    height: "70vh",
     backgroundColor: "white",
     margin: '20px auto',
   },
@@ -46,8 +44,39 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function LoginForm() {
+function LoginForm(props) {
   const classes = useStyles();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [err, setErr] = useState("");
+  const [passErr, setPassErr] = useState("");
+  let history = useHistory()
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setErr("");
+    const postData = { username, password };
+    axios
+      .post("http://localhost:8000/api/users/login", postData, {
+        withCredentials: true,
+      })
+      .then((response) => {
+        localStorage.setItem("userName", response.data.username);
+        history.push('/main')
+        window.location.reload();
+      })
+      .catch((error) => {
+        if(error.response.status === 402) {
+          setErr(error.response.data.message)
+          setPassErr("")
+        }
+        else if(error.response.status === 403)  {
+          setPassErr(error.response.data.message)
+          setErr("")
+        }
+        console.log(error.response);
+      });
+  };
 
   return (
     <Container component="main" maxWidth="xs" className={classes.root}>
@@ -65,13 +94,13 @@ function LoginForm() {
             margin="normal"
             required
             fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            // onChange={(e) => setEmail(e.target.value)}
-            // error={err ? true : false}
-            // helperText={err}
+            id="username"
+            label="User Name"
+            name="username"
+            autoComplete="username"
+            onChange={(e) => setUsername(e.target.value)}
+            error={err ? true : false}
+            helperText={err}
             autoFocus
           />
           <TextField
@@ -84,13 +113,9 @@ function LoginForm() {
             type="password"
             id="password"
             autoComplete="current-password"
-            // onChange={(e) => setPassword(e.target.value)}
-            // error={passErr ? true : false}
-            // helperText={passErr}
-          />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
+            onChange={(e) => setPassword(e.target.value)}
+            error={passErr ? true : false}
+            helperText={passErr}
           />
           <Button
             type="submit"
@@ -98,7 +123,7 @@ function LoginForm() {
             variant="contained"
             color="primary"
             className={classes.submit}
-            // onClick={handleSubmit}
+            onClick={handleSubmit}
           >
             Sign In
           </Button>
