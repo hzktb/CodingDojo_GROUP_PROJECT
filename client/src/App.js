@@ -16,7 +16,7 @@ function App() {
       <Route exact path="/main" component={() => <Main />} ></Route>
       <Route exact path="/addFood" component={() => <AddFood />} ></Route>
     </Switch>
-    <Redirect to="/" />
+    
   </>;
 }
 
