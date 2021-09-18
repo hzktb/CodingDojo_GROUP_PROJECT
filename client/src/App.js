@@ -6,18 +6,31 @@ import AddFood from "./views/AddFood";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css"
 import "../node_modules/bootstrap/dist/js/bootstrap.bundle"
 import LoginRegister from "./views/LoginRegister";
+import { withCookies } from 'react-cookie';
+import React, {useState} from "react";
 
-function App() {
+function App(props) {
+  const { cookies } = props;
+  const [user, setUser] = useState("")
+  let isLoggedIn = cookies.get('usertoken') ? true : false
+
+  console.log("is",isLoggedIn);
   return <>
-    <Navbar  isLoggedIn= {false} user="ss"/>
-
+    <Navbar  isLoggedIn= {isLoggedIn} user={user? user : localStorage.getItem("userName")}/>
+    { isLoggedIn 
+    ?
     <Switch>
-      <Route exact path="/" component={() => <LoginRegister />} ></Route>
-      <Route exact path="/main" component={() => <Main />} ></Route>
-      <Route exact path="/addFood" component={() => <AddFood />} ></Route>
+      <Route  exact path="/" component={() => <Main />} ></Route>
+      <Route  path="/addFood" component={() => <AddFood />} ></Route>
+      <Redirect to="/" />
     </Switch>
-    <Redirect to="/" />
+    :
+    <Switch>
+      <Route exact path="/" component={() => <LoginRegister setUser={setUser} />} ></Route>
+      <Redirect to="/" />
+    </Switch>
+}
   </>;
 }
 
-export default App;
+export default withCookies(App);
