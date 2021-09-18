@@ -1,5 +1,5 @@
 const User = require("../models/user.model");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 module.exports = {
@@ -21,7 +21,6 @@ module.exports = {
         { id: newUserObj._id },
         process.env.SECRET_KEY
       );
-
       res
         .cookie("usertoken", usertoken, process.env.SECRET_KEY, {
           httpOnly: true,
