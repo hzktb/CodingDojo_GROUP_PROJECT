@@ -14,12 +14,7 @@ function Navbar(props) {
         withCredentials: true,
       })
       .then((response) => {
-        console.log(response.data);
-        localStorage.removeItem('userName')
-        if (window.location.pathname === '/chatRoom') {
-          history.push('/')
-        }
-        window.location.reload();
+        console.log(response.data)
       })
       .catch((err) => {
         console.log(err);
