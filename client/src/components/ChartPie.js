@@ -1,7 +1,8 @@
 import React from 'react'
 import { Pie } from 'react-chartjs-2'
 
-const ChartPie = () => {
+const ChartPie = (props) => {
+  const {foodData} = props
 
     const data = {
         labels: [
@@ -12,7 +13,7 @@ const ChartPie = () => {
         ],
         datasets: [{
             label: 'My First Dataset',
-            data: [200, 70, 100,150],
+            data: [200, foodData.fat, foodData.protein, foodData.carb],
             backgroundColor: [
                 'rgb(255, 99, 132)',
                 'rgb(54, 162, 235)',

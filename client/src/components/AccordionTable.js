@@ -11,7 +11,10 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { makeStyles } from "@mui/styles";
 
-const AccordionTable = () => {
+const AccordionTable = (props) => {
+
+  const {foodData} = props
+
     return (
         <>
         <Accordion>
@@ -36,11 +39,11 @@ const AccordionTable = () => {
                         </TableHead>
                         <TableBody>
                             <TableRow>
-                                <TableCell></TableCell>
-                                <TableCell></TableCell>
-                                <TableCell></TableCell>
-                                <TableCell></TableCell>
-                                <TableCell></TableCell>
+                                <TableCell>{foodData.name}</TableCell>
+                                <TableCell>120</TableCell>
+                                <TableCell>{foodData.fat}</TableCell>
+                                <TableCell>{foodData.carb}</TableCell>
+                                <TableCell>{foodData.protein}</TableCell>
                             </TableRow>
                         </TableBody>
                     </Table>
