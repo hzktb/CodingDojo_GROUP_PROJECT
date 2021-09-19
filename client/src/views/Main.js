@@ -28,8 +28,8 @@ function Main()  {
   const submitHandler = (e) => {
     e.preventDefault()
   }
-  //style={{background: 'radial-gradient(circle, #e9e3e3 50%, #fcb045 100%)'}}
-  return <div  style={{backgroundColor: 'black'}}>
+
+  return <div  style={{background: 'radial-gradient(circle, #e9e3e3 50%, #fcb045 100%)'}}>
     <Container>
     <Row className="py-5">
       <Col md={3}>
