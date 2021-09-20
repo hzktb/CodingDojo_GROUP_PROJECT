@@ -1,20 +1,24 @@
-import React from 'react'
-import './styles.css';
-import { NavLink, useHistory } from 'react-router-dom'
-import axios from 'axios';
-import Apple from '../../images/applegif.gif'
+import React from "react";
+import "./styles.css";
+import { NavLink, useHistory } from "react-router-dom";
+import axios from "axios";
+import Apple from "../../images/applegif.gif";
 
 function Navbar(props) {
-  let history = useHistory()
+  let history = useHistory();
 
   const handleLogout = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:8000/api/users/logout", {}, {
-        withCredentials: true,
-      })
+      .post(
+        "http://localhost:8000/api/users/logout",
+        {},
+        {
+          withCredentials: true,
+        }
+      )
       .then((response) => {
-        console.log(response.data)
+        console.log(response.data);
       })
       .catch((err) => {
         console.log(err);
@@ -28,9 +32,17 @@ function Navbar(props) {
           <div className="col-12 mx-auto p-0">
             <nav className="navbar navbar-expand-lg">
               <div className="container-fluid">
-                <NavLink className="nav-link" to={props.isLoggedIn ? "/main" : "/"}>
-                  <span className="navbar-brand mb-0 h1 ">Rejuvenating Y
-                    <img src={Apple} alt="apple" style={{ width: "30px", height: "30px" }} />
+                <NavLink
+                  className="nav-link"
+                  to={props.isLoggedIn ? "/main" : "/"}
+                >
+                  <span className="navbar-brand mb-0 h1 ">
+                    Rejuvenating Y
+                    <img
+                      src={Apple}
+                      alt="apple"
+                      style={{ width: "30px", height: "30px" }}
+                    />
                     <span style={{ textTransform: "lowercase" }}>u</span>
                   </span>
                 </NavLink>
@@ -41,48 +53,69 @@ function Navbar(props) {
                   data-bs-target="#navbarSupportedContent"
                   aria-controls="navbarSupportedContent"
                   aria-expanded="false"
-                  aria-label="Toggle navigation">
+                  aria-label="Toggle navigation"
+                >
                   <span className="navbar-toggler-icon"></span>
                 </button>
-                {props.isLoggedIn ?
-                  <div className="collapse navbar-collapse" id="navbarSupportedContent">
+                {props.isLoggedIn ? (
+                  <div
+                    className="collapse navbar-collapse"
+                    id="navbarSupportedContent"
+                  >
                     <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
                       <li className="nav-item">
-                        <span className="navbar-text" > Welcome {props.user} </span>
+                        <span className="navbar-text">
+                          {" "}
+                          Welcome {props.user}{" "}
+                        </span>
                       </li>
                       <li className="nav-item">
                         <NavLink
                           activeClassName="menu-active"
                           className="nav-link"
                           style={{ padding: "0px", marginRight: "30px" }}
-                          to="/addFood">Add Food
+                          to="/addFood"
+                        >
+                          Add Food
                         </NavLink>
                       </li>
                       <li className="nav-item">
-                        <button className="navbar-btn" onClick={handleLogout}>Logout</button>
+                        <button className="navbar-btn" onClick={handleLogout}>
+                          Logout
+                        </button>
                       </li>
-
                     </ul>
                   </div>
-                  :
-                  <div className="collapse navbar-collapse" id="navbarSupportedContent">
+                ) : (
+                  <div
+                    className="collapse navbar-collapse"
+                    id="navbarSupportedContent"
+                  >
                     <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
                       <li className="nav-item">
-                        <NavLink activeClassName="menu-active" exact className="nav-link active" aria-current="page" to="/">Login/Register</NavLink>
+                        <NavLink
+                          activeClassName="menu-active"
+                          exact
+                          className="nav-link active"
+                          aria-current="page"
+                          to="/"
+                        >
+                          Login/Register
+                        </NavLink>
                       </li>
                       {/* <li className="nav-item">
                       <NavLink activeClassName="menu-active" className="nav-link" to="/registration">Register</NavLink>
                     </li> */}
                     </ul>
                   </div>
-                }
+                )}
               </div>
             </nav>
           </div>
         </div>
       </div>
     </>
-  )
+  );
 }
 
-export default Navbar
+export default Navbar;

@@ -23,13 +23,23 @@ const UserSchema = new mongoose.Schema(
       required: [true, "Please enter a valid weight"],
     },
 
+    age: {
+      type: Number,
+      required: [true, "Please enter valid age"],
+    },
+
     activityLevel: {
       type: String,
       required: [true, "Please enter your activity level"],
-      // enum: ["no activity, light activity, moderateActivity, heavy activity"],
+      enum: [
+        "noActivity",
+        "lightActivity",
+        "moderateActivity",
+        "heavyActivity",
+      ],
     },
 
-    dailyWeights: {
+    weights: {
       type: Array,
     },
 
