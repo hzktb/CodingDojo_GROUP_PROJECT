@@ -51,7 +51,7 @@ const activityLevelEnum = [
     label: "No Activity",
   },
   {
-    value: "lightActivity,",
+    value: "lightActivity",
     label: "Light Activity",
   },
   {
