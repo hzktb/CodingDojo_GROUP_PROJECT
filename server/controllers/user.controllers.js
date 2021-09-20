@@ -21,11 +21,11 @@ module.exports = {
         { id: newUserObj._id },
         process.env.SECRET_KEY
       );
-      console.log("usertoken",usertoken);
+      console.log("usertoken", usertoken);
       res
         .cookie("usertoken", usertoken, process.env.SECRET_KEY, {
           httpOnly: true,
-          expires: new Date(Date.now() + 900000)
+          expires: new Date(Date.now() + 900000),
         })
         .json(newUserObj);
     } catch (err) {
@@ -96,11 +96,10 @@ module.exports = {
   findOne: async (req, res) => {
     const decodedJwt = jwt.decode(req.cookies.usertoken, { complete: true });
     try {
-      const queriedUser = User.findOne({ _id: decodedJwt.payload.id });
+      const queriedUser = await User.findOne({ _id: decodedJwt.payload.id });
       res.json(queriedUser);
-      return;
     } catch (err) {
-      res.status(400).json(err);
+      res.status(400).json({ message: "error with finding the user" });
     }
   },
 };
