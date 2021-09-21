@@ -1,4 +1,5 @@
 const User = require("../models/user.model");
+//const Food = require("../models/food.model");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
@@ -102,4 +103,142 @@ module.exports = {
       res.status(400).json({ message: "error with finding the user" });
     }
   },
+  //add new function for adding meal:
+  addToMeal: async (req, res) => {
+    const {body, params} = req;
+    const dateofToday = new Date().toISOString().replace('-', '/').split('T')[0].replace('-', '/');
+    //const decodedJwt = jwt.decode(req.cookies.usertoken, { complete: true });
+    //const userId = decodedJwt.payload.id;
+    let mealIndex = body.meals.findIndex(el => {
+      return el.dateOfMeal === dateofToday;
+    });
+
+    if (mealIndex < 0) {
+      body.meals.push({dateOfMeal: dateofToday, breakfast: [], lunch: [], dinner: []});
+      mealIndex = body.meals.length -1;
+      }
+    
+    const addFoodToMeal = (arr) =>{
+      const foodIndex = arr.findIndex(el => {
+        return el.food_id === params.id;
+      });
+      if (foodIndex >= 0) {
+        let newQuantity = arr[foodIndex].quantity;
+        arr[foodIndex].quantity = newQuantity + 1;
+        } else {
+          arr.push({food_id: params.id, quantity: 1})
+        }
+    }
+
+    if(params.mealType=="breakfast"){
+      const items = body.meals[mealIndex].breakfast;
+      addFoodToMeal(items);
+    }else if(params.mealType=="lunch"){
+      const items = body.meals[mealIndex].lunch;
+      addFoodToMeal(items);
+    }else{
+      const items = body.meals[mealIndex].dinner;
+      addFoodToMeal(items);
+    }
+
+    try{
+      const updatedUser = await User.findOneAndUpdate({_id: body._id}, body, {new: true, runValidators: true});
+      res.json(updatedUser);
+    } catch(err){
+      res.status(400).json(error);
+      }
+  },
+
+  //add new function for delete food from meal:
+  deleteFromMeal: async (req, res) =>{
+    const {body, params} = req;
+    const dateofToday = new Date().toISOString().replace('-', '/').split('T')[0].replace('-', '/');
+    //You can also use mealIndex = body.meals.length -1 since the newest date is alway pushed into array
+    const mealIndex = body.meals.findIndex(el => {
+      return el.dateOfMeal === dateofToday;
+    });
+
+    const deleteFoodFromMeal = (arr) =>{
+      const foodIndex = arr.findIndex(el => {
+        return el.food_id === params.id;
+      });
+      let currQuantity = arr[foodIndex].quantity
+      if(currQuantity > 1){
+        currQuantity -= 1; 
+        arr[foodIndex].quantity = currQuantity;
+      }else{
+        const updatedArr = arr.filter(item => {
+          return item.food_id !== params.id;
+        });
+        arr = updatedArr;
+      }
+    }
+    
+    if(params.mealType=="breakfast"){
+      const items = body.meals[mealIndex].breakfast;
+      deleteFoodFromMeal(items);
+    }else if(params.mealType=="lunch"){
+      const items = body.meals[mealIndex].lunch;
+      deleteFoodFromMeal(items);
+    }else{
+      const items = body.meals[mealIndex].dinner;
+      deleteFoodFromMeal(items);
+    }
+
+    try{
+      const updatedUser = await User.findOneAndUpdate({_id: body._id}, body, {new: true, runValidators: true});
+      res.json(updatedUser);
+    } catch(err){
+      res.status(400).json(error);
+      }
+  }, 
+  //remove food item from meal:
+  removeFromMeal: async (req, res) => {
+    const {body, params} = req;
+    const dateofToday = new Date().toISOString().replace('-', '/').split('T')[0].replace('-', '/');
+    //You can also use mealIndex = body.meals.length -1 since the newest date is alway pushed into array
+    const mealIndex = body.meals.findIndex(el => {
+      return el.dateOfMeal === dateofToday;
+    });
+
+    const itemRemovalFromMeal = (arr) => {
+      const updatedMealItems = arr.filter(item => {
+        return item.food_id !== params.id;
+      });
+      arr = updatedMealItems;
+    }
+
+    if(params.mealType=="breakfast"){
+      const items = body.meals[mealIndex].breakfast;
+      itemRemovalFromMeal(items);
+    }else if(params.mealType=="lunch"){
+      const items = body.meals[mealIndex].lunch;
+      itemRemovalFromMeal(items);
+    }else{
+      const items = body.meals[mealIndex].dinner;
+      itemRemovalFromMeal(items);
+    }
+    
+    try{
+        const updatedUser = await User.findOneAndUpdate({_id: body._id}, body, {new: true, runValidators: true});
+        res.json(updatedUser);
+      } catch(error){
+        res.status(400).json(error);
+    }
+  },
+
+  //Dispaly Meal:
+  displayMeal: async(req, res)=>{
+    const decodedJwt = jwt.decode(req.cookies.usertoken, { complete: true });
+    const userId = decodedJwt.payload.id;
+    const {params} = req;
+
+    try{
+        const currentUser = await User.findOne({_id: userId})
+        .populate('meals.food_id');
+        res.json(currentUser.meals.find(el=> el.dateOfMeal === params.currDate));
+      } catch(error) {
+        res.status(400).json(error);
+    }
+  }
 };
