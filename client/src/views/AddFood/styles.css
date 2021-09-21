@@ -14,3 +14,21 @@
   color: #a01217;
   border:none;
 }
+
+@keyframes changeBg
+{
+  0%   {background-image: url("../../images/backgroundImage1.jpg");}
+  25%  {background-image: url("../../images/backgroundImage2.jpg");}
+   50%  {background-image: url("../../images/backgroundImage1.jpg");}
+   100% {background-image: url("../../images/backgroundImage2.jpg");}
+}
+
+#backImage { 
+  animation: changeBg 30s infinite;
+  height: 100%;
+  background-size:cover;
+  background-position: 0px 0px;
+  background-repeat: no-repeat;
+  background-image: url("../../images/backgroundImage1.jpg")
+  
+}

@@ -22,59 +22,64 @@ function AddFood() {
   const useStyles = makeStyles({
     root: {
       width: "50%",
-      margin: "20px auto"
+      margin: "0px auto"
     },
   });
   const classes = useStyles();
 
-  return <div className={classes.root}>
-    <Accordion classes={classes.root} >
-      <AccordionSummary
-        expandIcon={<ExpandMoreIcon />}
-        aria-controls="panel1a-content"
-        id="panel1a-header"
-      >
-        <Typography>Breakfast</Typography>
-      </AccordionSummary>
-      <AccordionDetails>
-        <FoodForm setDummy={setDummy} dummy={dummy} />
-      </AccordionDetails>
-    </Accordion>
+  return (
+    <div id="backImage" style={{ height: "100vh" }}>
+      <div className={classes.root} style={{ paddingTop: "40px" }} >
+        <Accordion classes={classes.root} >
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+          >
+            <Typography>Breakfast</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <FoodForm setDummy={setDummy} dummy={dummy} />
+          </AccordionDetails>
+        </Accordion>
 
-    <Accordion>
-      <AccordionSummary
-        expandIcon={<ExpandMoreIcon />}
-        aria-controls="panel2a-content"
-        id="panel2a-header"
-      >
-        <Typography>Lunch</Typography>
-      </AccordionSummary>
-      <AccordionDetails>
-        <FoodForm setDummy={setDummy} dummy={dummy} />
-      </AccordionDetails>
-    </Accordion>
+        <Accordion>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel2a-content"
+            id="panel2a-header"
+          >
+            <Typography>Lunch</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <FoodForm setDummy={setDummy} dummy={dummy} />
+          </AccordionDetails>
+        </Accordion>
 
-    <Accordion>
-      <AccordionSummary
-        expandIcon={<ExpandMoreIcon />}
-        aria-controls="panel3a-content"
-        id="panel3a-header"
-      >
-        <Typography>Dinner</Typography>
-      </AccordionSummary>
-      <AccordionDetails>
-        <FoodForm setDummy={setDummy} dummy={dummy} />
-      </AccordionDetails>
-    </Accordion>
+        <Accordion>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel3a-content"
+            id="panel3a-header"
+          >
+            <Typography>Dinner</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <FoodForm setDummy={setDummy} dummy={dummy} />
+          </AccordionDetails>
+        </Accordion>
 
-    <DisplayFood setDummy={setDummy} dummy={dummy} setIsEdit={setIsEdit} setEditFood={setEditFood} />
-    {isEdit ? <EditFood
-      open={isEdit}
-      setIsEdit={setIsEdit}
-      existingFood={editFood}
-    /> : false
-    }
-  </div>
+        <DisplayFood setDummy={setDummy} dummy={dummy} setIsEdit={setIsEdit} setEditFood={setEditFood} />
+        {isEdit ? <EditFood
+          open={isEdit}
+          setIsEdit={setIsEdit}
+          existingFood={editFood}
+        /> : false
+        }
+      </div>
+    </div>
+  )
+
 }
 
 export default AddFood;
