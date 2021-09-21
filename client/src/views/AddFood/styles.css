@@ -1,0 +1,16 @@
+.wrapper {
+  width: 50%;
+  margin: 10px auto;
+}
+
+.icons {
+  background-color: transparent;
+  border:none;
+  width: 20px;
+  height: 20px;
+  float: right;
+}
+.icons:hover {
+  color: #a01217;
+  border:none;
+}

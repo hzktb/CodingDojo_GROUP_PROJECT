@@ -62,6 +62,7 @@ function LoginForm(props) {
       })
       .then((response) => {
         localStorage.setItem("userName", response.data.username);
+        localStorage.setItem("userId", response.data._id);
         history.push('/main')
         window.location.reload();
       })
