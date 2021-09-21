@@ -18,7 +18,10 @@ function Navbar(props) {
         }
       )
       .then((response) => {
-        console.log(response.data);
+        localStorage.removeItem('userName')
+        localStorage.removeItem('userId')
+        history.push('/')
+        window.location.reload()
       })
       .catch((err) => {
         console.log(err);
