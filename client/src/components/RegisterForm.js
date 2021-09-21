@@ -18,7 +18,9 @@ import { useHistory } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: "white",
-    margin: "20px 150px 20px 0px",
+    margin: "40px 150px 30px 0px",
+    paddingBottom: "10px",
+    opacity: "0.8"
   },
   paper: {
     marginTop: theme.spacing(2),

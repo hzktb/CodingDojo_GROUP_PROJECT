@@ -1,5 +1,21 @@
 * {
   margin: 0px;
   padding: 0px;
-  box-sizing: border-box;
+}
+
+@keyframes animatedBackground {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 100% 0;
+  }
+}
+.animate-area {
+  height: 110vh;
+  background-size:contain;
+  background-image: url("./images/backgroundImage3.jpeg");
+  background-position: 0px 0px;
+  background-repeat: repeat-x;
+  animation: animatedBackground 20s linear infinite alternate;
 }

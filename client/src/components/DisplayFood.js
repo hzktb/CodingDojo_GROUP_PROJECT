@@ -68,7 +68,7 @@ export default function DisplayFood(props) {
   }
 
   return (
-    <TableContainer component={Paper} style={{ marginTop: "50px" }}>
+    <TableContainer component={Paper} style={{ marginTop: "50px", marginBottom:"50px"}}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
@@ -81,7 +81,10 @@ export default function DisplayFood(props) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {displayFoodList.map((food, index) => (
+          {displayFoodList.length <= 0 ?
+          <TableCell colSpan={6} style={{textAlign:"center", fontSize:"1rem"}}> You Have not added meal yet</TableCell>
+          :
+          displayFoodList.map((food, index) => (
             <StyledTableRow
               key={index}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -99,7 +102,9 @@ export default function DisplayFood(props) {
                 <DeleteForeverIcon className="icons" onClick={() => handleDelete(food)} />
               </StyledTableCell>
             </StyledTableRow>
-          ))}
+          ))
+        }
+          
         </TableBody>
       </Table>
     </TableContainer>
