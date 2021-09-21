@@ -43,9 +43,35 @@ const UserSchema = new mongoose.Schema(
       type: Array,
     },
 
-    foods: {
-      type: Array,
-    },
+    meals: [
+      {
+        dateOfMeal: { type: String, required: true },
+        breakfast: [{
+          food_id:{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Food',
+            required: true
+          }, 
+          quantity: { type: Number, required: true }
+          }],
+        lunch: [{
+          food_id:{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Food',
+            required: true
+          }, 
+          quantity: { type: Number, required: true }
+          }],
+        dinner: [{
+          food_id:{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Food',
+            required: true
+          }, 
+          quantity: { type: Number, required: true }
+          }]
+      }
+    ]
   },
   { timestamps: true }
 );
