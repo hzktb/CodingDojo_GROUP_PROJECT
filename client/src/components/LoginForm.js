@@ -14,7 +14,8 @@ const useStyles = makeStyles(theme => ({
   root: {
     height: "70vh",
     backgroundColor: "white",
-    margin: '20px auto',
+    margin: '40px auto',
+    opacity: "0.8"
   },
 
   paper: {

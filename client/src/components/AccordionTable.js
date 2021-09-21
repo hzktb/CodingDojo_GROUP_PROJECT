@@ -37,7 +37,7 @@ const AccordionTable = (props) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {foodData[foodData.length - 1] &&
+                {foodData && foodData[foodData.length - 1] &&
                   foodData[foodData.length - 1].breakfast.map((food, index) => {
                     return (
                       <TableRow key={"breakfast" + index}>
@@ -77,7 +77,7 @@ const AccordionTable = (props) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {foodData[foodData.length - 1] &&
+                {foodData && foodData[foodData.length - 1] &&
                   foodData[foodData.length - 1].lunch.map((food, index) => {
                     return (
                       <TableRow key={"lunch" + index}>
@@ -117,7 +117,7 @@ const AccordionTable = (props) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {foodData[foodData.length - 1] &&
+                {foodData && foodData[foodData.length - 1] &&
                   foodData[foodData.length - 1].dinner.map((food, index) => {
                     return (
                       <TableRow key={"dinner" + index}>
