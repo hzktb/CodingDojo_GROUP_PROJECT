@@ -11,6 +11,7 @@ import axios from 'axios';
 import CreateIcon from '@material-ui/icons/Create';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import "../views/AddFood/styles.css"
+import { useHistory } from 'react-router-dom'
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -24,7 +25,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   '&:nth-of-type(odd)': {
-    backgroundColor: theme.palette.action.hover,
+    backgroundColor: "#d09c9e",
   },
   // hide last border
   '&:last-child td, &:last-child th': {
@@ -36,6 +37,8 @@ export default function DisplayFood(props) {
   const userId = localStorage.getItem("userId")
   const [displayFoodList, setFoodList] = useState([])
   const { dummy } = props
+  const [userData, setUserData] = useState({});
+  let history = useHistory()
 
   useEffect(() => {
     axios.get('http://localhost:8000/api/foods/findAll', {
@@ -46,6 +49,14 @@ export default function DisplayFood(props) {
         console.log("data", response.data);
       })
       .catch(error => console.log(error))
+
+      axios.get("http://localhost:8000/api/users/getOne", {
+        withCredentials: true,
+      })
+      .then((response) => {
+        setUserData(response.data);
+      })
+      .catch((error) => console.log("error", error.response));
   }, [userId, dummy])
 
   const handleDelete = (food) => {
@@ -67,15 +78,32 @@ export default function DisplayFood(props) {
     props.setEditFood(food)
   }
 
+  const addToMeal = (food, mealType) => {
+    console.log(food._id);
+    axios
+      .put(
+        "http://localhost:8000/api/user/addtomeal/" + food._id + "/" + mealType,
+        userData,
+        { withCredentials: true }
+      )
+      .then((res) => {
+        console.log(res.data);
+        history.push('/')
+      }).catch(err => {
+        console.log(err.response.data);
+      });
+  };
+
   return (
-    <TableContainer component={Paper} style={{ marginTop: "50px", marginBottom:"50px"}}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+    <TableContainer component={Paper} style={{ margin:"30px auto", width: "60%"}}>
+      <Table  aria-label="simple table">
         <TableHead>
           <TableRow>
             <StyledTableCell>Food Name</StyledTableCell>
             <StyledTableCell align="right">Fat&nbsp;(g)</StyledTableCell>
             <StyledTableCell align="right">Protein&nbsp;(g)</StyledTableCell>
             <StyledTableCell align="right">Carbs&nbsp;(g)</StyledTableCell>
+            <StyledTableCell align="center">Add</StyledTableCell>
             <StyledTableCell align="right">Edit</StyledTableCell>
             <StyledTableCell align="right">Delete</StyledTableCell>
           </TableRow>
@@ -95,11 +123,16 @@ export default function DisplayFood(props) {
               <StyledTableCell align="right">{food.fat}</StyledTableCell>
               <StyledTableCell align="right">{food.protein}</StyledTableCell>
               <StyledTableCell align="right">{food.carb}</StyledTableCell>
-              <StyledTableCell align="right">
-                <CreateIcon className="icons" style={{ marginLeft: "20px" }} onClick={() => handleEdit(food)} />
+              <StyledTableCell align="right" >
+              <button className="button-class" onClick={() => addToMeal(food, "breakfast")}>Breakfast</button>
+              <button className="button-class" onClick={() => addToMeal(food, "lunch")}>Lunch</button>
+              <button className="button-class" onClick={() => addToMeal(food, "dinner")}>Dinner</button>
               </StyledTableCell>
               <StyledTableCell align="right">
-                <DeleteForeverIcon className="icons" onClick={() => handleDelete(food)} />
+                <CreateIcon className="icons" id="editHover" style={{ marginLeft: "20px" }} onClick={() => handleEdit(food)} />
+              </StyledTableCell>
+              <StyledTableCell align="right">
+                <DeleteForeverIcon className="icons" id="deleteHover" onClick={() => handleDelete(food)} />
               </StyledTableCell>
             </StyledTableRow>
           ))
