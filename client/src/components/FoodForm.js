@@ -15,6 +15,7 @@ const useStyles = makeStyles(theme => ({
     flexDirection: "column",
     alignItems: "center",
     width: "100%",
+    border: "2px solid #d09c9e"
   },
 
   form: {
@@ -23,10 +24,10 @@ const useStyles = makeStyles(theme => ({
 
   submit: {
     margin: theme.spacing(3, 0, 2),
-    backgroundColor: "black",
-    color: "white",
+    backgroundColor: "#e4d882",
+    color: "black",
     '&:hover': {
-      backgroundColor: '#a01217',
+      backgroundColor: '#a882e4',
       color: '#black',
     },
   },
@@ -71,6 +72,7 @@ function FoodForm(props) {
         setFat("")
         setFoodName("")
         setProtein("")
+        setErr("")
         props.setDummy(!props.dummy)
       })
       .catch((err) => {

@@ -7,7 +7,7 @@ import BarChart from "../components/BarChart";
 import { Paper } from "@material-ui/core";
 import axios from "axios";
 
-function Main() {
+function Main(props) {
   const [dailyWeight, setDailyWeight] = useState(0);
   const [userData, setUserData] = useState();
   const [weights, setWeights] = useState([]);
@@ -56,15 +56,6 @@ function Main() {
               <Paper elevation={24}>
                 <AccordionTable foodData={foodData} />
               </Paper>
-              <br />
-              <Button className="btn btn-primary">
-                <Link to="/addFood" style={{ color: "white" }}>
-                  {" "}
-                  Add Food{" "}
-                </Link>
-              </Button>
-              <br />
-              <br />
               <Form
                 onSubmit={submitHandler}
                 className="d-flex"
@@ -82,7 +73,7 @@ function Main() {
                   variant="btn btn-dark"
                   style={{ marginLeft: "10px" }}
                 >
-                  Record Butt
+                  Record Button
                 </Button>
               </Form>
               <br />
