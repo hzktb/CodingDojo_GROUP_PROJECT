@@ -32,12 +32,13 @@ const BarChart = () => {
                 'rgb(153, 102, 255)',
                 'rgb(201, 203, 207)'
             ],
-            borderWidth: 1
+            borderWidth: 1,
         }],
     }
+
     return(
         <>
-            <Bar data={data}/>
+            <Bar  data={data} style={{margin:"50px 0px 20px 120px",width:"50%"}}/>
         </>
     )
 }

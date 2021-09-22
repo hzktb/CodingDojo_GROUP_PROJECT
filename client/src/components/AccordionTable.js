@@ -16,7 +16,7 @@ const AccordionTable = (props) => {
 
   return (
     <>
-      <Accordion>
+      <Accordion style={{paddingLeft:"20px"}}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
@@ -56,7 +56,7 @@ const AccordionTable = (props) => {
           </Typography>
         </AccordionDetails>
       </Accordion>
-      <Accordion>
+      <Accordion style={{paddingLeft:"20px"}}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel2a-content"
@@ -96,7 +96,7 @@ const AccordionTable = (props) => {
           </Typography>
         </AccordionDetails>
       </Accordion>
-      <Accordion>
+      <Accordion style={{paddingLeft:"20px"}}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel2a-content"
