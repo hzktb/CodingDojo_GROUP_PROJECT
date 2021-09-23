@@ -7,7 +7,7 @@ import BarChart from "../components/BarChart";
 import { Paper } from "@material-ui/core";
 import axios from "axios";
 import "../App.css";
-import "../views/AddFood/styles.css"
+import "../views/AddFood/styles.css";
 import {
   KeyboardDatePicker,
   MuiPickersUtilsProvider,
@@ -97,12 +97,12 @@ function Main(props) {
           Take control of your goals. Track calories, break down ingredients,
           and log activities with Rejuvenating You.
         </p>
-        
-        
+
         {loaded && (
           <Container style={{ marginTop: "20px" }}>
             <Row className="py-5">
               <Col md={4}>
+                {console.log(foodData)}
                 <ChartPie
                   foodData={foodData}
                   weights={weights}
@@ -131,10 +131,15 @@ function Main(props) {
               </Paper>
             </Col>
             <Row className="py-0">
-            <Col md={8} className="py-0">
-            <MuiPickersUtilsProvider utils={DateFnsUtils} >
+              <Col md={8} className="py-0">
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
                   <KeyboardDatePicker
-                    style={{backgroundColor:"", paddingTop:"4px", marginLeft:"10px", marginTop:"0x"}}
+                    style={{
+                      backgroundColor: "",
+                      paddingTop: "4px",
+                      marginLeft: "10px",
+                      marginTop: "0x",
+                    }}
                     autoOk
                     variant="inline"
                     inputVariant="outlined"
@@ -147,8 +152,9 @@ function Main(props) {
                     }}
                   />
                 </MuiPickersUtilsProvider>
-                <button className="mainPageButton"
-                style={{ height:"60px"}}
+                <button
+                  className="mainPageButton"
+                  style={{ height: "60px" }}
                   onClick={(e) => {
                     e.preventDefault();
                     getTodayMeal();
@@ -156,14 +162,13 @@ function Main(props) {
                 >
                   Check Health Data Of Choosen Date
                 </button>
-                </Col>
-                </Row>
+              </Col>
+            </Row>
             <Form
               onSubmit={submitHandler}
               className="d-flex"
-              style={{ margin: "80px 0px 0px 0px", width:"90%" }}
+              style={{ margin: "80px 0px 0px 0px", width: "90%" }}
             >
-              
               <Form.Control
                 type="text"
                 name="q"
@@ -173,10 +178,9 @@ function Main(props) {
               ></Form.Control>
 
               <button
-               
                 className="mainPageButton"
                 // variant="btn btn-dark"
-                style={{ height:"60px"}}
+                style={{ height: "60px" }}
               >
                 Record Weight
               </button>
