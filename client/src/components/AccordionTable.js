@@ -9,8 +9,9 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { makeStyles } from "@mui/styles";
+import "../App.css"
 import axios from "axios";
+import AddCircleSharpIcon from '@material-ui/icons/AddCircleSharp';
 
 const AccordionTable = (props) => {
   const { foodData, userData, setUserData, getTodayMeal } = props;
@@ -36,7 +37,7 @@ const AccordionTable = (props) => {
   };
   return (
     <>
-      <Accordion>
+      <Accordion style={{paddingLeft:"20px"}}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
@@ -81,11 +82,7 @@ const AccordionTable = (props) => {
                           {food.food_id.protein * food.quantity}
                         </TableCell>
                         <TableCell align="center">
-                          <button
-                            onClick={() => incrementFood(food, "breakfast")}
-                          >
-                            +
-                          </button>
+                          <AddCircleSharpIcon onClick={() => incrementFood(food, "breakfast")} />
                         </TableCell>
                       </TableRow>
                     );
@@ -95,7 +92,7 @@ const AccordionTable = (props) => {
           </Typography>
         </AccordionDetails>
       </Accordion>
-      <Accordion>
+      <Accordion style={{paddingLeft:"20px"}}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel2a-content"
@@ -140,9 +137,7 @@ const AccordionTable = (props) => {
                           {food.food_id.protein * food.quantity}
                         </TableCell>
                         <TableCell align="center">
-                          <button onClick={() => incrementFood(food, "lunch")}>
-                            +
-                          </button>
+                        <AddCircleSharpIcon onClick={() => incrementFood(food, "lunch")} />
                         </TableCell>
                       </TableRow>
                     );
@@ -152,7 +147,7 @@ const AccordionTable = (props) => {
           </Typography>
         </AccordionDetails>
       </Accordion>
-      <Accordion>
+      <Accordion style={{paddingLeft:"20px"}}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel2a-content"
@@ -197,9 +192,7 @@ const AccordionTable = (props) => {
                           {food.food_id.protein * food.quantity}
                         </TableCell>
                         <TableCell align="center">
-                          <button onClick={() => incrementFood(food, "dinner")}>
-                            +
-                          </button>
+                        <AddCircleSharpIcon  onClick={() => incrementFood(food, "dinner")} />
                         </TableCell>
                       </TableRow>
                     );
