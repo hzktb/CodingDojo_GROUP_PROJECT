@@ -6,17 +6,40 @@ import AccordionTable from "../components/AccordionTable";
 import BarChart from "../components/BarChart";
 import { Paper } from "@material-ui/core";
 import axios from "axios";
-import "../App.css"
-import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
-import DateFnsUtils from '@date-io/date-fns';
+import "../App.css";
+import {
+  KeyboardDatePicker,
+  MuiPickersUtilsProvider,
+} from "@material-ui/pickers";
+import DateFnsUtils from "@date-io/date-fns";
 
 function Main(props) {
   const [dailyWeight, setDailyWeight] = useState(0);
   const [userData, setUserData] = useState();
   const [weights, setWeights] = useState([]);
-  const [foodData, setFoodData] = useState([]);
+  const [foodData, setFoodData] = useState({});
   const [loaded, setLoaded] = useState(false);
   const [selectedDate, handleDateChange] = useState(new Date());
+
+  const getTodayMeal = () => {
+    let dateofToday = new Date().toISOString().split("T")[0];
+    console.log(dateofToday);
+    console.log(selectedDate);
+    if (selectedDate.toISOString().split("T")[0] !== dateofToday) {
+      dateofToday = selectedDate.toISOString().split("T")[0];
+    }
+    console.log(dateofToday);
+    // console.log(date);
+    axios
+      .get("http://localhost:8000/api/meal/" + dateofToday, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        // console.log("this ran")
+        setFoodData(res.data);
+      })
+      .catch((err) => console.log(err.response));
+  };
 
   useEffect(() => {
     axios
@@ -25,8 +48,9 @@ function Main(props) {
       })
       .then((response) => {
         setUserData(response.data);
-        setFoodData(response.data.foods);
         setWeights(response.data.weights);
+        getTodayMeal();
+        console.log("ran");
         setLoaded(true);
       })
       .catch((error) => console.log("error", error.response));
@@ -34,6 +58,16 @@ function Main(props) {
 
   const submitHandler = (e) => {
     e.preventDefault();
+    let newWeights = [...weights, Number(dailyWeight)];
+    setWeights(newWeights);
+    axios
+      .put(
+        "http://localhost:8000/api/users/update",
+        { weights: newWeights },
+        { withCredentials: true }
+      )
+      .then((res) => console.log(res.data))
+      .catch((err) => console.log(err.response));
   };
 
   return (
@@ -43,16 +77,25 @@ function Main(props) {
       }}
     >
       <div id="MainbackImage" style={{}}>
-        <h1 style={{
-          fontSize: "4em",
-          fontWeight: "bolder",
-          padding: "100px 70px 0px 70px",
-          width: "700px"
-        }}>Fitness starts with rejuvenating yourself.</h1>
-        <p style={{
-          width: "600px",
-          padding: "0px 70px",
-        }}>Take control of your goals. Track calories, break down ingredients, and log activities with Rejuvenating You.</p>
+        <h1
+          style={{
+            fontSize: "4em",
+            fontWeight: "bolder",
+            padding: "100px 70px 0px 70px",
+            width: "700px",
+          }}
+        >
+          Fitness starts with rejuvenating yourself.
+        </h1>
+        <p
+          style={{
+            width: "600px",
+            padding: "0px 70px",
+          }}
+        >
+          Take control of your goals. Track calories, break down ingredients,
+          and log activities with Rejuvenating You.
+        </p>
         {loaded && (
           <Container style={{ marginTop: "20px" }}>
             <Row className="py-5">
@@ -76,7 +119,12 @@ function Main(props) {
             <Col md={4}></Col>
             <Col md={8} className="py-5">
               <Paper elevation={24}>
-                <AccordionTable foodData={foodData} />
+                <AccordionTable
+                  foodData={foodData}
+                  userData={userData}
+                  setUserData={setUserData}
+                  getTodayMeal={getTodayMeal}
+                />
               </Paper>
             </Col>
             <Form
@@ -94,9 +142,19 @@ function Main(props) {
                     format="MM/dd/yyyy"
                     value={selectedDate}
                     InputAdornmentProps={{ position: "start" }}
-                    onChange={date => handleDateChange(date)}
+                    onChange={(date) => {
+                      handleDateChange(date);
+                    }}
                   />
                 </MuiPickersUtilsProvider>
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    getTodayMeal();
+                  }}
+                >
+                  Go!
+                </button>
               </Col>
 
               <Form.Control
@@ -110,7 +168,7 @@ function Main(props) {
               <Button
                 type="submit"
                 // variant="btn btn-dark"
-                style={{ marginLeft: "10px", backgroundColor:"#a882e4" }}
+                style={{ marginLeft: "10px", backgroundColor: "#a882e4" }}
               >
                 Record Weight
               </Button>
@@ -119,9 +177,11 @@ function Main(props) {
             <br />
             <br />
             <Col md={10}>
-            <BarChart  weights={userData.dailyWeights} />
+              <BarChart
+                weights={weights}
+                initialWeight={userData.initialWeight}
+              />
             </Col>
-
           </Row>
         </Container>
       )}

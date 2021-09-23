@@ -9,14 +9,35 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import axios from "axios";
 import { makeStyles } from "@mui/styles";
 
 const AccordionTable = (props) => {
-  const { foodData } = props;
+  const { foodData, userData, setUserData, getTodayMeal } = props;
+
+  const incrementFood = (food, mealType) => {
+    console.log(food.food_id._id);
+    axios
+      .put(
+        "http://localhost:8000/api/user/addtomeal/" +
+          food.food_id._id +
+          "/" +
+          mealType,
+        userData,
+        { withCredentials: true }
+      )
+      .then((res) => {
+        setUserData(res.data);
+        getTodayMeal();
+      })
+      .catch((err) => {
+        console.log(err.response.data);
+      });
+  };
 
   return (
     <>
-      <Accordion style={{paddingLeft:"20px"}}>
+      <Accordion style={{ paddingLeft: "20px" }}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
@@ -30,24 +51,43 @@ const AccordionTable = (props) => {
               <TableHead>
                 <TableRow>
                   <TableCell>Breakfast</TableCell>
-                  <TableCell align="right">Calories</TableCell>
-                  <TableCell align="right">Fat(g)</TableCell>
-                  <TableCell align="right">Carbs(g)</TableCell>
-                  <TableCell align="right">Protein(g)</TableCell>
+                  <TableCell align="center">Calories</TableCell>
+                  <TableCell align="center">Fat(g)</TableCell>
+                  <TableCell align="center">Carbs(g)</TableCell>
+                  <TableCell align="center">Protein(g)</TableCell>
+                  <TableCell align="center">+</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {foodData && foodData[foodData.length - 1] &&
-                  foodData[foodData.length - 1].breakfast.map((food, index) => {
+                {foodData &&
+                  foodData.breakfast &&
+                  foodData.breakfast.map((food, index) => {
                     return (
                       <TableRow key={"breakfast" + index}>
-                        <TableCell>{food.name}</TableCell>
                         <TableCell>
-                          {food.fat * 9 + (food.carb + food.protein) * 4}
+                          {food.food_id.name} x {food.quantity}
                         </TableCell>
-                        <TableCell>{food.fat}</TableCell>
-                        <TableCell>{food.carb}</TableCell>
-                        <TableCell>{food.protein}</TableCell>
+                        <TableCell align="center">
+                          {(food.food_id.fat * 9 +
+                            (food.food_id.carb + food.food_id.protein) * 4) *
+                            food.quantity}
+                        </TableCell>
+                        <TableCell align="center">
+                          {food.food_id.fat * food.quantity}
+                        </TableCell>
+                        <TableCell align="center">
+                          {food.food_id.carb * food.quantity}
+                        </TableCell>
+                        <TableCell align="center">
+                          {food.food_id.protein * food.quantity}
+                        </TableCell>
+                        <TableCell align="center">
+                          <button
+                            onClick={() => incrementFood(food, "breakfast")}
+                          >
+                            +
+                          </button>
+                        </TableCell>
                       </TableRow>
                     );
                   })}
@@ -56,7 +96,7 @@ const AccordionTable = (props) => {
           </Typography>
         </AccordionDetails>
       </Accordion>
-      <Accordion style={{paddingLeft:"20px"}}>
+      <Accordion style={{ paddingLeft: "20px" }}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel2a-content"
@@ -70,24 +110,41 @@ const AccordionTable = (props) => {
               <TableHead>
                 <TableRow>
                   <TableCell>Lunch</TableCell>
-                  <TableCell align="right">Calories</TableCell>
-                  <TableCell align="right">Fat(g)</TableCell>
-                  <TableCell align="right">Carbs(g)</TableCell>
-                  <TableCell align="right">Protein(g)</TableCell>
+                  <TableCell align="center">Calories</TableCell>
+                  <TableCell align="center">Fat(g)</TableCell>
+                  <TableCell align="center">Carbs(g)</TableCell>
+                  <TableCell align="center">Protein(g)</TableCell>
+                  <TableCell align="center">+</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {foodData && foodData[foodData.length - 1] &&
-                  foodData[foodData.length - 1].lunch.map((food, index) => {
+                {foodData &&
+                  foodData.lunch &&
+                  foodData.lunch.map((food, index) => {
                     return (
                       <TableRow key={"lunch" + index}>
-                        <TableCell>{food.name}</TableCell>
                         <TableCell>
-                          {food.fat * 9 + (food.carb + food.protein) * 4}
+                          {food.food_id.name} x {food.quantity}
                         </TableCell>
-                        <TableCell>{food.fat}</TableCell>
-                        <TableCell>{food.carb}</TableCell>
-                        <TableCell>{food.protein}</TableCell>
+                        <TableCell align="center">
+                          {(food.food_id.fat * 9 +
+                            (food.food_id.carb + food.food_id.protein) * 4) *
+                            food.quantity}
+                        </TableCell>
+                        <TableCell align="center">
+                          {food.food_id.fat * food.quantity}
+                        </TableCell>
+                        <TableCell align="center">
+                          {food.food_id.carb * food.quantity}
+                        </TableCell>
+                        <TableCell align="center">
+                          {food.food_id.protein * food.quantity}
+                        </TableCell>
+                        <TableCell align="center">
+                          <button onClick={() => incrementFood(food, "lunch")}>
+                            +
+                          </button>
+                        </TableCell>
                       </TableRow>
                     );
                   })}
@@ -96,7 +153,7 @@ const AccordionTable = (props) => {
           </Typography>
         </AccordionDetails>
       </Accordion>
-      <Accordion style={{paddingLeft:"20px"}}>
+      <Accordion style={{ paddingLeft: "20px" }}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel2a-content"
@@ -110,24 +167,41 @@ const AccordionTable = (props) => {
               <TableHead>
                 <TableRow>
                   <TableCell>Lunch</TableCell>
-                  <TableCell align="right">Calories</TableCell>
-                  <TableCell align="right">Fat(g)</TableCell>
-                  <TableCell align="right">Carbs(g)</TableCell>
-                  <TableCell align="right">Protein(g)</TableCell>
+                  <TableCell align="center">Calories</TableCell>
+                  <TableCell align="center">Fat(g)</TableCell>
+                  <TableCell align="center">Carbs(g)</TableCell>
+                  <TableCell align="center">Protein(g)</TableCell>
+                  <TableCell align="center">+</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {foodData && foodData[foodData.length - 1] &&
-                  foodData[foodData.length - 1].dinner.map((food, index) => {
+                {foodData &&
+                  foodData.dinner &&
+                  foodData.dinner.map((food, index) => {
                     return (
                       <TableRow key={"dinner" + index}>
-                        <TableCell>{food.name}</TableCell>
                         <TableCell>
-                          {food.fat * 9 + (food.carb + food.protein) * 4}
+                          {food.food_id.name} x {food.quantity}
                         </TableCell>
-                        <TableCell>{food.fat}</TableCell>
-                        <TableCell>{food.carb}</TableCell>
-                        <TableCell>{food.protein}</TableCell>
+                        <TableCell align="center">
+                          {(food.food_id.fat * 9 +
+                            (food.food_id.carb + food.food_id.protein) * 4) *
+                            food.quantity}
+                        </TableCell>
+                        <TableCell align="center">
+                          {food.food_id.fat * food.quantity}
+                        </TableCell>
+                        <TableCell align="center">
+                          {food.food_id.carb * food.quantity}
+                        </TableCell>
+                        <TableCell align="center">
+                          {food.food_id.protein * food.quantity}
+                        </TableCell>
+                        <TableCell align="center">
+                          <button onClick={() => incrementFood(food, "dinner")}>
+                            +
+                          </button>
+                        </TableCell>
                       </TableRow>
                     );
                   })}

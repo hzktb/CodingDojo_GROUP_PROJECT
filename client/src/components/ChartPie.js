@@ -6,15 +6,65 @@ function ChartPie(props) {
     props;
 
   const calculateFat = () => {
-    return 1000;
+    let totalFat = 0;
+    foodData &&
+      foodData.breakfast &&
+      foodData.breakfast.forEach((food) => {
+        totalFat += food.food_id.fat * food.quantity;
+      });
+
+    foodData &&
+      foodData.lunch &&
+      foodData.lunch.forEach((food) => {
+        totalFat += food.food_id.fat * food.quantity;
+      });
+    foodData &&
+      foodData.dinner &&
+      foodData.dinner.forEach((food) => {
+        totalFat += food.food_id.fat * food.quantity;
+      });
+
+    return totalFat * 9;
   };
 
   const calculateCarb = () => {
-    return 500;
+    let totalCarb = 0;
+    foodData &&
+      foodData.breakfast &&
+      foodData.breakfast.forEach((food) => {
+        totalCarb += food.food_id.carb * food.quantity;
+      });
+    foodData &&
+      foodData.lunch &&
+      foodData.lunch.forEach((food) => {
+        totalCarb += food.food_id.carb * food.quantity;
+      });
+    foodData &&
+      foodData.dinner &&
+      foodData.dinner.forEach((food) => {
+        totalCarb += food.food_id.carb * food.quantity;
+      });
+    return totalCarb * 4;
   };
 
   const calculateProtein = () => {
-    return 500;
+    let totalProtein = 0;
+    foodData &&
+      foodData.breakfast &&
+      foodData.breakfast.forEach((food) => {
+        totalProtein += food.food_id.protein * food.quantity;
+      });
+    foodData &&
+      foodData.lunch &&
+      foodData.lunch.forEach((food) => {
+        totalProtein += food.food_id.protein * food.quantity;
+      });
+    foodData &&
+      foodData.dinner &&
+      foodData.dinner.forEach((food) => {
+        totalProtein += food.food_id.protein * food.quantity;
+      });
+    return totalProtein * 4;
   };
 
   const totalCalorie = () => {
@@ -35,6 +85,9 @@ function ChartPie(props) {
     const protein = calculateProtein();
     const carb = calculateCarb();
     total = total - fat - protein - carb;
+    if (total < 0) {
+      return 0;
+    }
     return total;
   };
 
