@@ -1,21 +1,15 @@
 import React, { useState, useEffect } from "react";
-import {
-  Paper,
-  Button,
-  TextField,
-  Grid,
-  makeStyles,
-} from "@material-ui/core";
+import { Paper, Button, TextField, Grid, makeStyles } from "@material-ui/core";
 import axios from "axios";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(0),
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     width: "100%",
-    border: "2px solid #d09c9e"
+    border: "2px solid #d09c9e",
   },
 
   form: {
@@ -26,9 +20,9 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(3, 0, 2),
     backgroundColor: "#e4d882",
     color: "black",
-    '&:hover': {
-      backgroundColor: '#a882e4',
-      color: '#black',
+    "&:hover": {
+      backgroundColor: "#a882e4",
+      color: "#black",
     },
   },
 }));
@@ -40,59 +34,65 @@ function FoodForm(props) {
   const [protein, setProtein] = useState();
   const [carbs, setCarbs] = useState();
   const [err, setErr] = useState({});
-  const userId = localStorage.getItem("userId")
-  const { setIsEdit, existingFood } = props
+  const userId = localStorage.getItem("userId");
+  const { setIsEdit, existingFood } = props;
 
   useEffect(() => {
     if (setIsEdit) {
-      setFoodName(existingFood.name)
-      setFat(existingFood.fat)
-      setProtein(existingFood.protein)
-      setCarbs(existingFood.carb)
+      setFoodName(existingFood.name);
+      setFat(existingFood.fat);
+      setProtein(existingFood.protein);
+      setCarbs(existingFood.carb);
     }
-  }, [existingFood, setIsEdit])
-
+  }, [existingFood, setIsEdit]);
 
   const handleAddFood = (e) => {
-
     e.preventDefault();
     axios
-      .post("http://localhost:8000/api/foods/create", {
-        name: foodName,
-        protein: protein,
-        fat: fat,
-        carb: carbs,
-        user_id: userId
-      }, {
-        withCredentials: true,
-      })
+      .post(
+        "http://localhost:8000/api/foods/create",
+        {
+          name: foodName,
+          protein: protein,
+          fat: fat,
+          carb: carbs,
+          user_id: userId,
+        },
+        {
+          withCredentials: true,
+        }
+      )
       .then((response) => {
         console.log(response.data);
-        setCarbs("")
-        setFat("")
-        setFoodName("")
-        setProtein("")
-        setErr("")
-        props.setDummy(!props.dummy)
+        setCarbs("");
+        setFat("");
+        setFoodName("");
+        setProtein("");
+        setErr("");
+        props.setDummy(!props.dummy);
       })
       .catch((err) => {
         console.log("errors", err.response.data.errors);
-        setErr(err.response.data.errors)
-        setCarbs("")
+        setErr(err.response.data.errors);
+        setCarbs("");
       });
-  }
+  };
 
   const handleEditFood = (e) => {
     axios
-      .put("http://localhost:8000/api/foods/update/" + existingFood._id, {
-        name: foodName,
-        protein: protein,
-        fat: fat,
-        carb: carbs,
-        user_id: userId
-      }, {
-        withCredentials: true,
-      })
+      .put(
+        "http://localhost:8000/api/foods/update/" + existingFood._id,
+        {
+          name: foodName,
+          protein: protein,
+          fat: fat,
+          carb: carbs,
+          // user_id: userId
+        },
+        {
+          withCredentials: true,
+        }
+      )
       .then((response) => {
         console.log(response);
         props.setOpen(false);
@@ -100,8 +100,7 @@ function FoodForm(props) {
       .catch((err) => {
         console.log(err);
       });
-  }
-
+  };
 
   return (
     <Paper elevation={3} className={classes.paper}>
@@ -186,4 +185,3 @@ function FoodForm(props) {
 }
 
 export default FoodForm;
-
