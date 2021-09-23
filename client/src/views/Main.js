@@ -7,6 +7,7 @@ import BarChart from "../components/BarChart";
 import { Paper } from "@material-ui/core";
 import axios from "axios";
 import "../App.css";
+import "../views/AddFood/styles.css"
 import {
   KeyboardDatePicker,
   MuiPickersUtilsProvider,
@@ -96,6 +97,8 @@ function Main(props) {
           Take control of your goals. Track calories, break down ingredients,
           and log activities with Rejuvenating You.
         </p>
+        
+        
         {loaded && (
           <Container style={{ marginTop: "20px" }}>
             <Row className="py-5">
@@ -114,7 +117,7 @@ function Main(props) {
         )}
       </div>
       {loaded && (
-        <Container style={{ marginTop: "-40px" }}>
+        <Container style={{ marginTop: "0px" }}>
           <Row className="py-5">
             <Col md={4}></Col>
             <Col md={8} className="py-5">
@@ -127,14 +130,11 @@ function Main(props) {
                 />
               </Paper>
             </Col>
-            <Form
-              onSubmit={submitHandler}
-              className="d-flex"
-              style={{ marginTop: "80px" }}
-            >
-              <Col md={2} className="py-2" style={{ width: "440px" }}>
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <Row className="py-0">
+            <Col md={8} className="py-0">
+            <MuiPickersUtilsProvider utils={DateFnsUtils} >
                   <KeyboardDatePicker
+                    style={{backgroundColor:"", paddingTop:"4px", marginLeft:"10px", marginTop:"0x"}}
                     autoOk
                     variant="inline"
                     inputVariant="outlined"
@@ -147,31 +147,39 @@ function Main(props) {
                     }}
                   />
                 </MuiPickersUtilsProvider>
-                <button
+                <button className="mainPageButton"
+                style={{ height:"60px"}}
                   onClick={(e) => {
                     e.preventDefault();
                     getTodayMeal();
                   }}
                 >
-                  Go!
+                  Check Health Data Of Choosen Date
                 </button>
-              </Col>
-
+                </Col>
+                </Row>
+            <Form
+              onSubmit={submitHandler}
+              className="d-flex"
+              style={{ margin: "80px 0px 0px 0px", width:"90%" }}
+            >
+              
               <Form.Control
                 type="text"
                 name="q"
                 onChange={(e) => setDailyWeight(e.target.value)}
                 placeholder="Input your daily weight"
-                className="sm-1"
+                className="sm-3"
               ></Form.Control>
 
-              <Button
-                type="submit"
+              <button
+               
+                className="mainPageButton"
                 // variant="btn btn-dark"
-                style={{ marginLeft: "10px", backgroundColor: "#a882e4" }}
+                style={{ height:"60px"}}
               >
                 Record Weight
-              </Button>
+              </button>
             </Form>
             <br />
             <br />

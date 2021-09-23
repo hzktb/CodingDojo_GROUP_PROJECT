@@ -89,6 +89,7 @@ export default function DisplayFood(props) {
       .then((res) => {
         console.log(res.data);
         history.push('/')
+        window.location.reload()
       }).catch(err => {
         console.log(err.response.data);
       });
